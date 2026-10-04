@@ -6,10 +6,11 @@ import { useForm } from 'vee-validate';
 import { z } from 'zod';
 import { api } from './services/api';
 import { useExhibitionStore, type Exhibit } from './stores/exhibition';
+import LedgerView from './components/LedgerView.vue';
 
 const store = useExhibitionStore();
 const online = useOnline();
-const tab = ref<'checkin' | 'environment' | 'discrepancy'>('checkin');
+const tab = ref<'checkin' | 'environment' | 'discrepancy' | 'ledger'>('checkin');
 const dialog = ref(false);
 const selected = ref<Exhibit | null>(null);
 const schema = toTypedSchema(z.object({ code: z.string().min(2), name: z.string().min(2), lender: z.string().min(2), hall: z.string().min(2) }));
@@ -47,9 +48,12 @@ function stageLabel(stage: Exhibit['stage']) { return { arrival: '到场点交',
 
         <v-card>
           <v-tabs v-model="tab" color="deep-purple">
-            <v-tab value="checkin">{{ $t('checkIn') }}</v-tab><v-tab value="environment">{{ $t('environment') }}</v-tab><v-tab value="discrepancy">{{ $t('discrepancies') }}</v-tab>
+            <v-tab value="checkin">{{ $t('checkIn') }}</v-tab><v-tab value="environment">{{ $t('environment') }}</v-tab><v-tab value="discrepancy">{{ $t('discrepancies') }}</v-tab><v-tab value="ledger">核验账</v-tab>
           </v-tabs>
           <v-window v-model="tab">
+            <v-window-item value="ledger">
+              <LedgerView />
+            </v-window-item>
             <v-window-item value="checkin">
               <v-virtual-scroll :items="store.exhibits" height="520" item-height="112">
                 <template #default="{ item }">
