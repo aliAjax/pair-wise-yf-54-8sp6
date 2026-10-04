@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 62019",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview --host 0.0.0.0 --port 62019"
+    "preview": "vite preview --host 0.0.0.0 --port 62019",
+    "test:rules": "esbuild src/ledger/engine.test.ts --bundle --platform=node --format=esm --outfile=node_modules/.cache/ledger-test.mjs && node node_modules/.cache/ledger-test.mjs"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
